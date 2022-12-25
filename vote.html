@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+   
+    </style>
+  </head>
+  <body>
+    <div style="display:flex; margin-top: 5em; gap: 2em; justify-content: center;">
+    <div>
+      <label id="label1"> Pilihan 1</label>
+    <h1 id="score" style="height: 2em;">0</h1>
+    <form id="form" action="">
+      <input id="input" value="1"  autocomplete="off" style="display: none;" />
+      <button id="btn">Send</button>
+    </form>
+  </div>
+  <div>
+    <label id="label2"> Pilihan 2</label>
+    <h1 id="score2" style="height: 2em;">0</h1>
+    <form id="form2" action="">
+      <input id="input2" value="1"  autocomplete="off" style="display: none;" />
+      <button id="btn2">Send</button>
+    </form>
+  </div>
+    </div>
+
+    <!-- <form id="formNama" action="" style="margin-top: 2em;">
+      <input id="inputNama1"   autocomplete="off"  />
+      <input id="inputNama2"   autocomplete="off"  />
+      <button id="btn">Send</button>
+    </form>
+   -->
+   
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+
+  var form = document.getElementById('form');
+  var input = document.getElementById('input');
+  var form2 = document.getElementById('form2');
+  var input2 = document.getElementById('input2');
+  var btn = document.getElementById('btn');
+  var s = document.getElementById('score');
+  var s2 = document.getElementById('score2');
+  //
+  hasil = 0;
+  socket.on('message', function(msg) {
+   hasil = msg
+  });
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (input.value) {
+    hasil += parseInt(input.value);
+    socket.emit('message', hasil);
+    btn.style.display = "none"
+    btn2.style.display = "none"
+    s.innerHTML = hasil
+    }
+  });
+  socket.on('message', function(msg) {
+    s.innerHTML = hasil
+  });
+
+
+  hasil2 = 0;
+  socket.on('message2', function(msg) {
+   hasil2 = msg
+  });
+  form2.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (input2.value) {
+    hasil2 += parseInt(input.value);
+    socket.emit('message2', hasil2);
+    btn.style.display = "none"
+    btn2.style.display = "none"
+    s.innerHTML = hasil
+    s2.innerHTML = hasil2
+    }
+  });
+  socket.on('message2', function(msg2) {
+    s2.innerHTML = hasil2
+  });
+
+var formNama = document.getElementById("formNama");
+var inputNama1 = document.getElementById("inputNama1"); 
+var inputNama2 = document.getElementById("inputNama2"); 
+var label1 = document.getElementById("label1"); 
+var label2 = document.getElementById("label2"); 
+ formNama.addEventListener("submit",(e)=>{
+  e.preventDefault();
+ label1.innerHTML = inputNama1.value
+ label2.innerHTML = inputNama2.value
+ 
+ })
+
+</script>
+  </body>
+</html>
